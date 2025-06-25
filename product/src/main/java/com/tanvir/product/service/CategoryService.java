@@ -1,5 +1,7 @@
 package com.tanvir.product.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.tanvir.product.dto.CategoryDTO;
@@ -12,22 +14,35 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class CategoryService {
-	
+
 	public CategoryRepository categoryRepository;
-	
-	//create category
-	
+
+	// create category
+
 	public CategoryDTO createCategory(CategoryDTO categoryDTO) {
-		Category category=CategoryMapper.toCategoryEntity(categoryDTO);
-		category=categoryRepository.save(category);
-		 return CategoryMapper.toCategoryDto(category);
+		Category category = CategoryMapper.toCategoryEntity(categoryDTO);
+		category = categoryRepository.save(category);
+		return CategoryMapper.toCategoryDto(category);
 	}
-	
-	//get all category
-	
-	//get category by id
-	//delete category
-	
-	
+
+	// get all category
+
+	public List<CategoryDTO> getAllCategories() {
+		return categoryRepository.findAll().stream().map(CategoryMapper::toCategoryDto).toList();
+	}
+
+	// get category by id
+
+	public CategoryDTO getCategoryById(Long id) {
+		Category category = categoryRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Category Id is not found"));
+		return CategoryMapper.toCategoryDto(category);
+	}
+	// delete category
+
+	public String deleteCategory(Long id) {
+		categoryRepository.deleteById(id);
+		return "Category " + id + " has been deleted!!";
+	}
 
 }
