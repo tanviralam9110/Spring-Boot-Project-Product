@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tanvir.product.Exception.CategoryAlredyExixtsException;
 import com.tanvir.product.dto.CategoryDTO;
 import com.tanvir.product.service.CategoryService;
 
@@ -34,11 +35,24 @@ public class CategoryController {
 	// create categories
 
 	@PostMapping
-	public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
-		return new ResponseEntity<CategoryDTO>(categoryService.createCategory(categoryDTO), HttpStatus.CREATED);
+	public ResponseEntity<?> createCategory(@RequestBody CategoryDTO categoryDTO) {
+		
+//		try {
+//			
+//			CategoryDTO savedCategory=categoryService.createCategory(categoryDTO);
+//			return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
+//			
+//		} catch (CategoryAlredyExixtsException exception) {
+//			
+//			return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+//		}
+		
+		CategoryDTO savedCategory=categoryService.createCategory(categoryDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(savedCategory);
 
 	}
 	// get category by id
+	
 
 	@GetMapping("/{id}")
 	public CategoryDTO getCategoryById(@PathVariable Long id) {

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.tanvir.product.Exception.CategoryNotFoundException;
 import com.tanvir.product.dto.ProductDTO;
 import com.tanvir.product.entity.Category;
 import com.tanvir.product.entity.Product;
@@ -25,8 +26,8 @@ public class ProductService {
 
 	public ProductDTO createProduct(ProductDTO productDTO) {
 
-		Category category = categoryRepository.findById(productDTO.getCategoryId())
-				.orElseThrow(() -> new RuntimeException("Category not found"));
+		Category category = categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(
+				() -> new CategoryNotFoundException("Category id : " + productDTO.getCategoryId() + " not found"));
 
 		// DTO -> Entity
 		Product product = ProductMapper.toProductEntity(productDTO, category);
@@ -65,18 +66,17 @@ public class ProductService {
 
 		product.setName(productDTO.getName());
 		product.setDescription(productDTO.getDescription());
-		product. setPrice(productDTO.getPrice());
+		product.setPrice(productDTO.getPrice());
 		product.setCategory(category);
 		productRepository.save(product);
 		return ProductMapper.toProductDto(product);
 	}
-	
+
 	// product Deleted
-	
+
 	public String deleteProduct(Long id) {
 		productRepository.deleteById(id);
-		return "Product "+id+" has been deleted";
+		return "Product " + id + " has been deleted";
 	}
-	
 
 }
