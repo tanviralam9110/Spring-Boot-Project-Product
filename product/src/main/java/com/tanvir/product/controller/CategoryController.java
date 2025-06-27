@@ -12,11 +12,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tanvir.product.Exception.CategoryAlredyExixtsException;
 import com.tanvir.product.dto.CategoryDTO;
 import com.tanvir.product.service.CategoryService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+
+@Tag(
+		name = "Category REST API CRUD Operation",
+		description = "CREATE READ UPDATE and DELETE Opration for Category REST API"
+		)
 
 @RestController
 @RequestMapping("/api/categories")
@@ -26,6 +32,9 @@ public class CategoryController {
 	private CategoryService categoryService;
 
 	// get all categories
+	
+	@Operation(summary = "Fetch All Category ", 
+			description = "REST API to fetch all catogories.")
 
 	@GetMapping
 	public List<CategoryDTO> getAllCategories() {
@@ -33,6 +42,9 @@ public class CategoryController {
 	}
 
 	// create categories
+	
+	@Operation(summary = "Create Category ", 
+			description = "REST API to create catogories.")
 
 	@PostMapping
 	public ResponseEntity<?> createCategory(@RequestBody CategoryDTO categoryDTO) {
@@ -53,6 +65,9 @@ public class CategoryController {
 	}
 	// get category by id
 	
+	@Operation(summary = "Fetch  Category By Id ", 
+			description = "REST API to fetch  catogories by id.")
+	
 
 	@GetMapping("/{id}")
 	public CategoryDTO getCategoryById(@PathVariable Long id) {
@@ -60,6 +75,8 @@ public class CategoryController {
 	}
 
 	// delete category
+	@Operation(summary = "Delete Category By Id ", 
+			description = "REST API to delete catogories By Id.")
 
 	@DeleteMapping("/{id}")
 	public String deleteCategory(@PathVariable Long id) {
